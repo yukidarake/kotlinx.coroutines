@@ -116,6 +116,19 @@ allprojects {
     }
 }
 
+if (buildSnapshotTrain) {
+    println "Hacking test tasks, removing stress and flaky tests"
+    allprojects {
+        tasks.withType(Test).all {
+            exclude '**/*LinearizabilityTest*.*'
+            exclude '**/*LFTest.*'
+            exclude '**/*StressTest.*'
+            exclude '**/*scheduler.*'
+            exclude '**/*Timeout.*'
+        }
+    }
+}
+
 /*
  * Hack to trick nmpp plugin: we are renaming artifacts in order to provide backward compatibility for dependencies,
  * but publishing plugin does not re-read artifact names for kotlin-jvm projects, so renaming is not applied in pom files
